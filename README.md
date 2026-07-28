@@ -76,9 +76,9 @@ Abra um Pull Request.
 * **Editor:** Visual Studio Code
 
 ---
-📜 Licença
+## 📜 Licença
 Este projeto está sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
 
-👨‍💻 Desenvolvido por **Juliano Cipriano Batista**
+## 👨‍💻 Desenvolvido por **Juliano Cipriano Batista**
 
 ⭐ Se este repositório ajudou nos seus estudos, não se esqueça de deixar uma estrela!
