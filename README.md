@@ -48,7 +48,7 @@ Consultas e scripts focados em **Microsoft SQL Server**:
 ## 🚀 Como Usar Este Repositório
 1. Clonar o repositório para o seu computador
 ```bash
-git clone [https://github.com/julianociprianobatista-dev/SQL-Impressionador.git](https://github.com/julianociprianobatista-dev/SQL-Impressionador.git)
+git clone https://github.com/julianociprianobatista-dev/SQL-Impressionador.git
 ```
 2. Entrar na pasta do projeto
 ```bash
