@@ -58,7 +58,7 @@ FROM
 ```
 ## 4. Comando AS: Renomeando colunas (aliasing)
 ```sql
-Selecione as 03 colunas da tabela DimProduct: ProductName, BrandName e ColorName
+Selecione as 03 colunas da tabela DimProduct: ProductName, BrandName e ColorName e renomeie para Produto, Marca e Cor.
 
 SELECT
 	ProductName AS "Produto",
