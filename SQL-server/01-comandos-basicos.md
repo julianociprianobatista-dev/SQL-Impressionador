@@ -30,4 +30,32 @@ SELECT TOP(10) * FROM DimProduct
  2. Retorna as 10% primeiras linhas da tabela de Clientes
 
 SELECT TOP(10) PERCENT * FROM DimCustomer
-´´´
+```
+## 3. Comando SELECT DISTINCT: Retorna os valores distintos de uma tabela
+```sql
+-- Retorne todas as linhas da tabela DimProduct
+
+SELECT * FROM DimProduct
+
+-- Retorne os valores distintos da coluna ColorNAme da tabela DimProduct
+
+SELECT ColorName FROM DimProduct
+
+-- Retorne os valores distintos da coluna ColorName da tabela DimProduct
+
+SELECT DISTINCT ColorNAme FROM DimProduct
+
+-- Retorne todas as linhas da tabela DimEmployee
+
+SELECT * FROM DimEmployee
+
+-- Retorne os valores distintos da coluna DetartmentName da tabela DimEmployee
+
+SELECT
+	DISTINCT DepartmentName
+FROM
+	DimEmployee
+```
+
+
+
