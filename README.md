@@ -75,6 +75,13 @@ Abra um Pull Request.
 * **Versionamento:** Git & GitHub
 * **Editor:** Visual Studio Code
 
+## 🌐 Banco de Dados Utilizado
+
+As consultas deste repositório foram desenvolvidas e testadas utilizando o banco de dados fictício **Contoso** (disponibilizado gratuitamente pela **Microsoft** para cenários de treino em Business Intelligence e SQL Server).
+
+* **SGBD:** Microsoft SQL Server
+* **Database de Treino:** Contoso (ContosoRetailDW / ContosoUniversity)
+
 ---
 ## 📜 Licença
 Este projeto está sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
