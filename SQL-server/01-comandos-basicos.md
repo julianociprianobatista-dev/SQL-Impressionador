@@ -21,3 +21,13 @@ SELECT
 from
 	DimStore
 ```
+## 2. Comandos SELECT TOP(N) e TOP(N) PERCENT: retorna as N primeiras linhas
+```sql
+ 1. Crie um código que retona as 10 primeiras linhas da tabela de Produtos
+
+SELECT TOP(10) * FROM DimProduct
+
+ 2. Retorna as 10% primeiras linhas da tabela de Clientes
+
+SELECT TOP(10) PERCENT * FROM DimCustomer
+´´´
