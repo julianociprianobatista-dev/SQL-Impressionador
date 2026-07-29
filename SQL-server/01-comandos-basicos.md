@@ -33,29 +33,41 @@ SELECT TOP(10) PERCENT * FROM DimCustomer
 ```
 ## 3. Comando SELECT DISTINCT: Retorna os valores distintos de uma tabela
 ```sql
--- Retorne todas as linhas da tabela DimProduct
+ Retorne todas as linhas da tabela DimProduct
 
 SELECT * FROM DimProduct
 
--- Retorne os valores distintos da coluna ColorNAme da tabela DimProduct
+ Retorne os valores distintos da coluna ColorNAme da tabela DimProduct
 
 SELECT ColorName FROM DimProduct
 
--- Retorne os valores distintos da coluna ColorName da tabela DimProduct
+ Retorne os valores distintos da coluna ColorName da tabela DimProduct
 
 SELECT DISTINCT ColorNAme FROM DimProduct
 
--- Retorne todas as linhas da tabela DimEmployee
+ Retorne todas as linhas da tabela DimEmployee
 
 SELECT * FROM DimEmployee
 
--- Retorne os valores distintos da coluna DetartmentName da tabela DimEmployee
+ Retorne os valores distintos da coluna DetartmentName da tabela DimEmployee
 
 SELECT
 	DISTINCT DepartmentName
 FROM
 	DimEmployee
 ```
+## 4. Comando AS: Renomeando colunas (aliasing)
+```sql
+Selecione as 03 colunas da tabela DimProduct: ProductName, BrandName e ColorName
+
+SELECT
+	ProductName AS "Produto",
+	BrandName AS "Marca",
+	ColorName AS "Cor"
+FROM
+	DimProduct
+```
+
 
 
 
