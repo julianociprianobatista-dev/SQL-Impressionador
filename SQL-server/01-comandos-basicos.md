@@ -109,7 +109,14 @@ SELECT * FROM
 WHERE 
     ColorName = 'Black'
 ```
-
+## 8. Ordenação por Quantidade de Funcionários
+Consulta que traz as 100 primeiras lojas ordenadas de forma decrescente pelo número total de funcionários.
+```sql
+SELECT TOP (100) * FROM 
+    DimStore
+ORDER BY 
+    EmployeeCount DESC
+```
 
 
 
