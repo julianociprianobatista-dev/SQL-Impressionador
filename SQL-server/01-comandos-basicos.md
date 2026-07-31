@@ -92,6 +92,23 @@ WHERE
 ORDER BY 
     BirthDate DESC;
 ```
+## 7. Filtros por Texto Exato (WHERE)
+Exemplos de filtragem em colunas do tipo texto para buscar marcas e cores específicas na tabela DimProduct.
+```sql
+Produtos da Marca Fabrikam
+SQL
+SELECT * FROM 
+    DimProduct
+WHERE 
+    BrandName = 'Fabrikam'
+
+	Produtos na Cor Preta (Black)
+SQL
+SELECT * FROM 
+    DimProduct
+WHERE 
+    ColorName = 'Black'
+```
 
 
 
