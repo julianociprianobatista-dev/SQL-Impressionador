@@ -82,6 +82,17 @@ ORDER BY
     UnitCost DESC, 
     Weight DESC;
 ```
+## 6. Filtro de Datas com a Cláusula WHERE
+Consulta para identificar todos os clientes que nasceram a partir de 31 de dezembro de 1970, ordenando do mais recente para o mais antigo.
+```sql
+SELECT * FROM 
+    DimCustomer
+WHERE 
+    BirthDate >= '1970-12-31'
+ORDER BY 
+    BirthDate DESC;
+```
+
 
 
 
