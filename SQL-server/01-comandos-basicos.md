@@ -67,6 +67,21 @@ SELECT
 FROM
 	DimProduct
 ```
+## 5. Seleção com Limite (TOP), Aliases e Ordenação Múltipla
+
+Consulta que retorna os 10 produtos de maior custo da tabela `DimProduct`, renomeando os nomes das colunas e aplicando ordenação secundária por peso.
+
+```sql
+SELECT TOP (10) 
+    ProductName AS 'PRODUTO',
+    UnitCost AS 'PREÇO DE CUSTO',
+    Weight AS 'PESO'
+FROM 
+    DimProduct
+ORDER BY 
+    UnitCost DESC, 
+    Weight DESC;
+```
 
 
 
