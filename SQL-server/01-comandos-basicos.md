@@ -80,7 +80,7 @@ FROM
     DimProduct
 ORDER BY 
     UnitCost DESC, 
-    Weight DESC;
+    Weight DESC
 ```
 ## 6. Filtro de Datas com a Cláusula WHERE
 Consulta para identificar todos os clientes que nasceram a partir de 31 de dezembro de 1970, ordenando do mais recente para o mais antigo.
@@ -90,7 +90,7 @@ SELECT * FROM
 WHERE 
     BirthDate >= '1970-12-31'
 ORDER BY 
-    BirthDate DESC;
+    BirthDate DESC
 ```
 ## 7. Filtros por Texto Exato (WHERE)
 Exemplos de filtragem em colunas do tipo texto para buscar marcas e cores específicas na tabela DimProduct.
