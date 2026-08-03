@@ -1,120 +1,139 @@
 # 🔰 Comandos Básicos em SQL Server
 
- Neste aquivo guardo minhas consultas fundamentais de seleção e filtragem de dados
+Neste arquivo guardo minhas consultas fundamentais de seleção e filtragem de dados.
 
- (SELECT, WHERE, ORDER BY, TOP)
- ---
+`SELECT`, `WHERE`, `ORDER BY`, `TOP`
+
+> **Base de dados de referência:** as tabelas usadas aqui (`DimStore`, `DimProduct`, `DimCustomer`, `DimEmployee`) pertencem ao schema do **ContosoRetailDW**.
+
+---
 
 ## 1. Consulta simples de colunas
-```sql
- Este código seleciona toda a tabela
-SELECT 
-	*
-FROM
-	DimStore
 
- Este código seleciona 03 colunas da tabela
+```sql
+-- Seleciona todas as colunas da tabela
 SELECT
-	StoreKey,
-	StoreName, 
-	StorePhone 
-from
-	DimStore
+    *
+FROM
+    DimStore
+
+-- Seleciona 3 colunas específicas da tabela
+SELECT
+    StoreKey,
+    StoreName,
+    StorePhone
+FROM
+    DimStore
 ```
-## 2. Comandos SELECT TOP(N) e TOP(N) PERCENT: retorna as N primeiras linhas
+
+## 2. Comandos `TOP(N)` e `TOP(N) PERCENT`: retorna as N primeiras linhas
+
 ```sql
- 1. Crie um código que retona as 10 primeiras linhas da tabela de Produtos
+-- 1. Retorna as 10 primeiras linhas da tabela de Produtos
+SELECT TOP (10) * FROM DimProduct
 
-SELECT TOP(10) * FROM DimProduct
-
- 2. Retorna as 10% primeiras linhas da tabela de Clientes
-
-SELECT TOP(10) PERCENT * FROM DimCustomer
+-- 2. Retorna as 10% primeiras linhas da tabela de Clientes
+SELECT TOP (10) PERCENT * FROM DimCustomer
 ```
-## 3. Comando SELECT DISTINCT: Retorna os valores distintos de uma tabela
-```sql
- Retorne todas as linhas da tabela DimProduct
 
+## 3. Comando `SELECT DISTINCT`: retorna os valores distintos de uma coluna
+
+```sql
+-- Retorna todas as linhas da tabela DimProduct
 SELECT * FROM DimProduct
 
- Retorne os valores distintos da coluna ColorNAme da tabela DimProduct
-
+-- ❌ Sem DISTINCT: retorna a coluna ColorName com valores repetidos
 SELECT ColorName FROM DimProduct
 
- Retorne os valores distintos da coluna ColorName da tabela DimProduct
+-- ✅ Com DISTINCT: retorna apenas os valores únicos da coluna ColorName
+SELECT DISTINCT ColorName FROM DimProduct
 
-SELECT DISTINCT ColorNAme FROM DimProduct
-
- Retorne todas as linhas da tabela DimEmployee
-
+-- Retorna todas as linhas da tabela DimEmployee
 SELECT * FROM DimEmployee
 
- Retorne os valores distintos da coluna DetartmentName da tabela DimEmployee
-
+-- Retorna os valores distintos da coluna DepartmentName da tabela DimEmployee
 SELECT
-	DISTINCT DepartmentName
+    DISTINCT DepartmentName
 FROM
-	DimEmployee
+    DimEmployee
 ```
-## 4. Comando AS: Renomeando colunas (aliasing)
+
+## 4. Comando `AS`: renomeando colunas (aliasing)
+
+Seleciona 3 colunas da tabela `DimProduct` (`ProductName`, `BrandName`, `ColorName`) e renomeia para `Produto`, `Marca` e `Cor`.
+
 ```sql
-Selecione as 03 colunas da tabela DimProduct: ProductName, BrandName e ColorName e renomeie para Produto, Marca e Cor.
-
 SELECT
-	ProductName AS "Produto",
-	BrandName AS "Marca",
-	ColorName AS "Cor"
+    ProductName AS [Produto],
+    BrandName   AS [Marca],
+    ColorName   AS [Cor]
 FROM
-	DimProduct
+    DimProduct
 ```
+
 ## 5. Seleção com Limite (TOP), Aliases e Ordenação Múltipla
 
-Consulta que retorna os 10 produtos de maior custo da tabela `DimProduct`, renomeando os nomes das colunas e aplicando ordenação secundária por peso.
+Consulta que retorna os 10 produtos de maior custo da tabela `DimProduct`, renomeando as colunas e aplicando ordenação secundária por peso.
 
 ```sql
-SELECT TOP (10) 
-    ProductName AS 'PRODUTO',
-    UnitCost AS 'PREÇO DE CUSTO',
-    Weight AS 'PESO'
-FROM 
+SELECT TOP (10)
+    ProductName AS [PRODUTO],
+    UnitCost    AS [PREÇO DE CUSTO],
+    Weight      AS [PESO]
+FROM
     DimProduct
-ORDER BY 
-    UnitCost DESC, 
+ORDER BY
+    UnitCost DESC,
     Weight DESC
 ```
-## 6. Filtro de Datas com a Cláusula WHERE
-Consulta para identificar todos os clientes que nasceram a partir de 31 de dezembro de 1970, ordenando do mais recente para o mais antigo.
+
+## 6. Filtro de Datas com a Cláusula `WHERE`
+
+Consulta para identificar todos os clientes que nasceram a partir de 31/12/1970, ordenando do mais recente para o mais antigo.
+
 ```sql
-SELECT * FROM 
+SELECT
+    *
+FROM
     DimCustomer
-WHERE 
+WHERE
     BirthDate >= '1970-12-31'
-ORDER BY 
+ORDER BY
     BirthDate DESC
 ```
-## 7. Filtros por Texto Exato (WHERE)
-Exemplos de filtragem em colunas do tipo texto para buscar marcas e cores específicas na tabela DimProduct.
+
+## 7. Filtros por Texto Exato (`WHERE`)
+
+Exemplos de filtragem em colunas de texto para buscar marcas e cores específicas na tabela `DimProduct`.
+
 ```sql
-Produtos da Marca Fabrikam
-SQL
-SELECT * FROM 
+-- Produtos da marca Fabrikam
+SELECT
+    *
+FROM
     DimProduct
-WHERE 
+WHERE
     BrandName = 'Fabrikam'
 
-	Produtos na Cor Preta (Black)
-SQL
-SELECT * FROM 
+-- Produtos na cor preta (Black)
+SELECT
+    *
+FROM
     DimProduct
-WHERE 
+WHERE
     ColorName = 'Black'
 ```
+
 ## 8. Ordenação por Quantidade de Funcionários
-Consulta que traz as 100 primeiras lojas ordenadas de forma decrescente pelo número total de funcionários.
+
+Consulta que traz as 100 primeiras lojas, ordenadas de forma decrescente pelo número total de funcionários.
+
 ```sql
-SELECT TOP (100) * FROM 
+SELECT TOP (100)
+    *
+FROM
     DimStore
-ORDER BY 
+ORDER BY
     EmployeeCount DESC
 ```
 
