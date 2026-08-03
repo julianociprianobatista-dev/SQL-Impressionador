@@ -136,59 +136,134 @@ FROM
 ORDER BY
     EmployeeCount DESC
 ```
-## 9. WHERE mais AND
+## 9. `WHERE` com `AND`
+
+Retorna produtos da marca Fabrikam **e** da cor preta (as duas condições precisam ser verdadeiras).
+
 ```sql
-SELECT * FROM DimProduct
-WHERE BrandName = 'FABRIKAM' AND ColorName = 'BLACK'
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    BrandName = 'Fabrikam' AND ColorName = 'Black'
 ```
-## 10. WHERE mais OR
+
+## 10. `WHERE` com `OR`
+
+Retorna produtos da marca Contoso **ou** da cor branca (basta uma das condições ser verdadeira).
+
 ```sql
-SELECT * FROM DimProduct
-WHERE BrandName = 'CONTOSO' OR ColorName = 'WHITE'
-
--- OBS: NÃO USAMOS OR PARA COLUNAS DIFERENTES
--- EXERCICIO FILTRAR NA TABELA AS MARCAS CONTOSO OU FABRIKAM
-
-SELECT * FROM DimProduct
-WHERE BrandName = 'CONTOSO' OR BrandName = 'FABRIKAM'
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    BrandName = 'Contoso' OR ColorName = 'White'
 ```
-## 11. WHERE mais NOT
+
+> ⚠️ É possível usar `OR` entre colunas diferentes, mas o resultado tende a ficar mais amplo do que o esperado — combine com cuidado. O uso mais comum de `OR` é dentro da **mesma coluna**, para checar múltiplos valores possíveis (esse caso evolui naturalmente para o operador `IN`, que veremos mais adiante).
+
+**Exercício:** filtrar produtos das marcas Contoso ou Fabrikam.
+
 ```sql
-SELECT * FROM DimEmployee
-WHERE NOT DepartmentName = 'Marketing'
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    BrandName = 'Contoso' OR BrandName = 'Fabrikam'
 ```
-## 12. Exercicios de fixação: AND, OR e NOT
+
+## 11. `WHERE` com `NOT`
+
+Retorna todos os funcionários que **não** pertencem ao departamento de Marketing.
+
 ```sql
---1. SELECIONE TODAS AS LINHAS DA TABELA DIMEMPLOYEE DE FUNCIONÁRIOS DO SEXO FEMININO E DO DEPARTAMENTO DE FINANÇAS
-
-SELECT * FROM DimEmployee
-WHERE Gender = 'F' AND DepartmentName = 'Finance'
-
---2. SELECIONE TODAS AS LINHAS DA TABELA DIMPRODUCT DE PRODUTOS DA MARCA CONTOSO E DA COR VERMELHA E QUE TENHAM UN UNITPRICE MAIOR OU IGUAL A $100
-
-SELECT * FROM DimProduct
-WHERE BrandName = 'Contoso' AND ColorName = 'Red' AND UnitPrice >= 100
-
--- 3. SELECIONE TODAS AS LINHAS DA TABELA DIMPRODUCT COM PRODUTOS DA MARCA LITWARE OU DA MARCA FABRIKAM OU DA COR PRETA
-SELECT * FROM DimProduct
-WHERE BrandName = 'Litware' OR BrandName = 'Fabrikam' OR ColorName = 'Black'
-
---4. SELECIONE TODAS AS LINHAS DA TABELA DIMSALESTERRITORY ONDE O CONTINENTE É A EUROPA MAS O PAÍS NÃO É IGUAL A ITALIA
-SELECT * FROM DimSalesTerritory
-WHERE NOT SalesTerritoryCountry = 'ItalY' AND SalesTerritoryGroup = 'Europe'
+SELECT
+    *
+FROM
+    DimEmployee
+WHERE
+    NOT DepartmentName = 'Marketing'
 ```
-## 13. Cuidados ao utilizar AND em conjunto com o OR
+
+> 💡 O equivalente mais usado no dia a dia é o operador `<>` (diferente de):
+> ```sql
+> SELECT * FROM DimEmployee WHERE DepartmentName <> 'Marketing'
+> ```
+> Os dois retornam o mesmo resultado. `NOT` costuma ser mais útil quando a condição a ser negada é composta (veja o exercício 4 abaixo).
+
+## 12. Exercícios de fixação: `AND`, `OR` e `NOT`
+
+**1.** Selecione todas as linhas da tabela `DimEmployee` de funcionárias do sexo feminino e do departamento de Finanças.
+
 ```sql
--- SELECIONE TODAS AS LINHAS DA TABELA DIMPRODUCT ONDE A COR DO PRODUTO PODE SER IGUAL A PRETO OU VERMELHO, MAS A MARCA DEVE SER OBRIGATORIAMENTE A FABRIKAM
+SELECT
+    *
+FROM
+    DimEmployee
+WHERE
+    Gender = 'F' AND DepartmentName = 'Finance'
+```
 
-SELECT * FROM DimProduct
-WHERE ColorName = 'Black' OR ColorName = 'Red' AND BrandName = 'Fabrikam'
+**2.** Selecione todas as linhas da tabela `DimProduct` de produtos da marca Contoso, da cor vermelha e com `UnitPrice` maior ou igual a $100.
 
--- SQL NÃO CONSEGUE ENTENDER QUAIS FILTROS FAZER PRIMEIRO, TEMOS QUE GARANTIR COMO QUEREMOS QUE OS CRITERIOS SEJAM AVALIADOS.
---TEMOS QUE POR () ONDE QUEREMOS QUE O SQL FILTRE PRIMEIRO
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    BrandName = 'Contoso' AND ColorName = 'Red' AND UnitPrice >= 100
+```
 
-SELECT * FROM DimProduct
-WHERE (ColorName = 'Black' OR ColorName = 'Red') AND BrandName = 'Fabrikam'
+**3.** Selecione todas as linhas da tabela `DimProduct` com produtos da marca Litware ou da marca Fabrikam ou da cor preta.
+
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    BrandName = 'Litware' OR BrandName = 'Fabrikam' OR ColorName = 'Black'
+```
+
+**4.** Selecione todas as linhas da tabela `DimSalesTerritory` onde o continente é a Europa, mas o país não é igual a Itália.
+
+```sql
+SELECT
+    *
+FROM
+    DimSalesTerritory
+WHERE
+    SalesTerritoryGroup = 'Europe' AND NOT (SalesTerritoryCountry = 'Italy')
+```
+
+## 13. Cuidados ao utilizar `AND` em conjunto com o `OR`
+
+Selecione todas as linhas da tabela `DimProduct` onde a cor do produto pode ser preta ou vermelha, mas a marca deve ser obrigatoriamente Fabrikam.
+
+```sql
+-- ❌ Sem parênteses: o resultado não é o esperado
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    ColorName = 'Black' OR ColorName = 'Red' AND BrandName = 'Fabrikam'
+```
+
+> ⚠️ Sem parênteses, o SQL aplica a ordem de precedência padrão — `AND` é avaliado antes de `OR` — o que pode não ser a lógica pretendida. Use `()` para deixar explícito o que deve ser avaliado primeiro, do jeito que você quer.
+
+```sql
+-- ✅ Com parênteses: agora sim, cor (preta OU vermelha) E marca Fabrikam
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    (ColorName = 'Black' OR ColorName = 'Red') AND BrandName = 'Fabrikam'
 ```
 
 
