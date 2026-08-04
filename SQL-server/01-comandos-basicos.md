@@ -337,7 +337,44 @@ WHERE
 
 > 💡 Resumindo o padrão do `%`: `'%texto'` = termina com; `'texto%'` = começa com; `'%texto%'` = contém em qualquer posição.
 
+## 16. `WHERE` com `BETWEEN`: filtrando um intervalo de valores
 
+O operador `BETWEEN` filtra valores dentro de um intervalo, de forma mais legível do que usar `>=` e `<=` combinados. É **inclusivo** nas duas pontas — inclui o valor inicial e o valor final do intervalo.
+
+Retorna produtos com preço unitário entre 50 e 100 (incluindo os dois limites).
+
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    UnitPrice BETWEEN 50 AND 100
+```
+
+Retorna produtos com preço unitário **fora** desse intervalo.
+
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    UnitPrice NOT BETWEEN 50 AND 100
+```
+
+Também funciona com datas (formato `yyyy-mm-dd`). Retorna funcionários contratados durante o ano de 2000.
+
+```sql
+SELECT
+    *
+FROM
+    DimEmployee
+WHERE
+    HireDate BETWEEN '2000-01-01' AND '2000-12-31'
+```
+
+> ⚠️ **Cuidado com `BETWEEN` em colunas `datetime`:** como o operador é inclusivo, `'2000-12-31'` é interpretado como `'2000-12-31 00:00:00'`. Se a coluna guardar hora (não só a data), qualquer registro com horário depois da meia-noite do dia 31/12 fica **de fora** do filtro. Nesses casos, o mais seguro é usar `HireDate >= '2000-01-01' AND HireDate < '2001-01-01'` para garantir que o dia inteiro do último dia seja coberto.
 
 
 
