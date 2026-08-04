@@ -265,7 +265,33 @@ FROM
 WHERE
     (ColorName = 'Black' OR ColorName = 'Red') AND BrandName = 'Fabrikam'
 ```
-
+## 14. `WHERE` com `IN`: alternativa ao `OR` múltiplo
+ 
+Como vimos na seção 10, usar `OR` várias vezes na mesma coluna funciona, mas fica repetitivo e menos legível. O operador `IN` resolve isso, permitindo checar uma lista de valores possíveis em uma única condição.
+ 
+Retorna produtos cuja cor esteja entre Prata, Azul, Vermelho ou Preto.
+ 
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    ColorName IN ('Silver', 'Blue', 'Red', 'Black')
+```
+ 
+Retorna funcionários dos departamentos de Produção, Marketing ou Engenharia.
+ 
+```sql
+SELECT
+    *
+FROM
+    DimEmployee
+WHERE
+    DepartmentName IN ('Production', 'Marketing', 'Engineering')
+```
+ 
+> 💡 `ColorName IN ('Silver', 'Blue', 'Red', 'Black')` é equivalente a escrever `ColorName = 'Silver' OR ColorName = 'Blue' OR ColorName = 'Red' OR ColorName = 'Black'` — mesmo resultado, forma mais limpa e mais fácil de manter conforme a lista cresce.
 
 
 
