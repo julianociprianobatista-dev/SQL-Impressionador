@@ -376,5 +376,31 @@ WHERE
 
 > ⚠️ **Cuidado com `BETWEEN` em colunas `datetime`:** como o operador é inclusivo, `'2000-12-31'` é interpretado como `'2000-12-31 00:00:00'`. Se a coluna guardar hora (não só a data), qualquer registro com horário depois da meia-noite do dia 31/12 fica **de fora** do filtro. Nesses casos, o mais seguro é usar `HireDate >= '2000-01-01' AND HireDate < '2001-01-01'` para garantir que o dia inteiro do último dia seja coberto.
 
+## 17. `WHERE` com `IS NULL` e `IS NOT NULL`: filtrando valores ausentes
 
+`NULL` representa a ausência de valor em uma coluna — não é o mesmo que zero, texto vazio `''` ou espaço em branco. Por isso, não é possível comparar com `=`; é preciso usar os operadores `IS NULL` e `IS NOT NULL`.
+
+Retorna clientes que **têm** empresa preenchida (`CompanyName` não é nulo).
+
+```sql
+SELECT
+    *
+FROM
+    DimCustomer
+WHERE
+    CompanyName IS NOT NULL
+```
+
+Retorna clientes **sem** empresa preenchida (`CompanyName` está nulo).
+
+```sql
+SELECT
+    *
+FROM
+    DimCustomer
+WHERE
+    CompanyName IS NULL
+```
+
+> ⚠️ **Por que não usar `= NULL`?** `NULL` representa um valor desconhecido — e um desconhecido nunca é "igual" a outro desconhecido, nem mesmo a si mesmo. A query `WHERE CompanyName = NULL` não gera erro de sintaxe, mas **sempre retorna zero linhas**, silenciosamente. É um dos bugs mais comuns e difíceis de perceber para quem vem de outras linguagens de programação, onde `== null` costuma funcionar normalmente.
 
