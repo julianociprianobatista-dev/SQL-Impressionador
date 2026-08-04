@@ -293,6 +293,50 @@ WHERE
  
 > 💡 `ColorName IN ('Silver', 'Blue', 'Red', 'Black')` é equivalente a escrever `ColorName = 'Silver' OR ColorName = 'Blue' OR ColorName = 'Red' OR ColorName = 'Black'` — mesmo resultado, forma mais limpa e mais fácil de manter conforme a lista cresce.
 
+## 15. `WHERE` com `LIKE`: filtro por padrão de texto
+
+O operador `LIKE` permite buscar textos que seguem um determinado padrão, usando **wildcards** (curingas):
+
+- `%` — representa zero ou mais caracteres, em qualquer quantidade
+- `_` — representa exatamente um caractere
+
+A posição do `%` muda o que é buscado:
+
+Retorna produtos cujo nome **contenha** "MP3 Player" em qualquer parte do texto.
+
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    ProductName LIKE '%MP3 Player%'
+```
+
+Retorna produtos cuja descrição **contenha** a palavra "Type" em qualquer posição (antes ou depois pode ter qualquer texto).
+
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    ProductDescription LIKE '%Type%'
+```
+
+Retorna produtos cuja descrição **comece** com a palavra "Type" (sem nada antes).
+
+```sql
+SELECT
+    *
+FROM
+    DimProduct
+WHERE
+    ProductDescription LIKE 'Type%'
+```
+
+> 💡 Resumindo o padrão do `%`: `'%texto'` = termina com; `'texto%'` = começa com; `'%texto%'` = contém em qualquer posição.
+
 
 
 
