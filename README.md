@@ -13,6 +13,8 @@ O **SQL Impressionador** é um guia prático e biblioteca de consultas SQL estru
 
 Este repositório foi construído para resolver um problema comum: encontrar rapidamente soluções para problemas do dia a dia em banco de dados, servindo tanto como fonte de consulta rápida quanto como portfólio de estudos.
 
+📋 [Veja o roadmap do projeto](https://github.com/julianociprianobatista-dev/SQL-Impressionador/projects/1)
+
 ---
 
 ## ⚡ Exemplo Prático de Consulta
