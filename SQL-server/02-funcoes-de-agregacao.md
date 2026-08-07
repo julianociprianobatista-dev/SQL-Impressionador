@@ -42,3 +42,17 @@ FROM
 
 💡 Dica: O uso do DISTINCT dentro do COUNT() garante que cada marca seja contada apenas uma vez, independentemente de quantos produtos estejam associados a ela na tabela.
 ```
+## 4. Função MAXIMO e MINIMO
+
+### Consulta utilizada para encontrar os valores extremos (máximo e mínimo) da coluna de custo unitário (`UnitCost`) na tabela de produtos.
+
+```sql
+SELECT 
+    MAX(UnitCost) AS 'CustoMaximo',
+    MIN(UnitCost) AS 'CustoMinimo'
+FROM DimProduct;
+
+💡 Dica: As funções MAX() e MIN() também podem ser aplicadas em colunas de datas para encontrar a data mais recente ou a mais antiga do banco de dados.
+```
+
+
