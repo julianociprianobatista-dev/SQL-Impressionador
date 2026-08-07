@@ -13,7 +13,7 @@ O **SQL Impressionador** é um guia prático e biblioteca de consultas SQL estru
 
 Este repositório foi construído para resolver um problema comum: encontrar rapidamente soluções para problemas do dia a dia em banco de dados, servindo tanto como fonte de consulta rápida quanto como portfólio de estudos.
 
-📋 [Veja o roadmap do projeto](https://github.com/users/julianociprianobatista-dev/projects/4)
+📋 [Veja o roadmap do projeto](https://github.com/julianociprianobatista-dev/SQL-Impressionador/projects/1)
 
 ---
 
@@ -41,10 +41,19 @@ ORDER BY [ID_Cliente] ASC;
 Consultas e scripts focados em **Microsoft SQL Server**:
 
 * 📄 [01 - Comandos Básicos](./SQL-Server/01-comandos-basicos.md) *(SELECT, WHERE, TOP, ORDER BY)*
-* 📄 [02 - Funções de Agregação](./SQL-Server/02-funcoes-de-agregacao.md)  *(GROUP BY, HAVING, COUNT, SUM, AVG)*
+* 📄 [02 - Funções de Agregação](./SQL-Server/02-funcoes-de-agregacao.md) *(GROUP BY, HAVING, agrupamentos, GROUP BY + JOINs)*
 * 📄 03 - JOINs e Relacionamentos *(em construção — INNER JOIN, LEFT JOIN, RIGHT JOIN)*
-* 📄 04 - Subqueries e Views *(em construção — Subconsultas e Views)*
-* 📄 05 - Funções de Janela *(em construção — ROW_NUMBER, RANK, OVER)*
+* 📄 04 - Variáveis e Manipulação de Dados *(em construção — variáveis, strings, datas, funções condicionais)*
+* 📄 05 - Views e CRUD *(em construção — SQL Views, CRUD)*
+* 📄 06 - Subqueries e CTEs *(em construção)*
+* 📄 07 - Estruturas de Controle *(em construção — loops no SQL)*
+* 📄 08 - Funções de Janela *(em construção — ROW_NUMBER, RANK, OVER)*
+* 📄 09 - Expressões Regulares *(em construção — Regular Expressions)*
+* 📄 10 - Constraints e Sequences *(em construção)*
+* 📄 11 - Transações *(em construção — Transactions)*
+* 📄 12 - Functions e Procedures *(em construção)*
+* 📄 13 - Triggers *(em construção — Triggers DML)*
+* 📄 14 - Pivot Table *(em construção)*
 
 ---
 
