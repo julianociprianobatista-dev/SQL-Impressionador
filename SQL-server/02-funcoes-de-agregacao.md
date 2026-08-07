@@ -54,5 +54,15 @@ FROM DimProduct;
 
 💡 Dica: As funções MAX() e MIN() também podem ser aplicadas em colunas de datas para encontrar a data mais recente ou a mais antiga do banco de dados.
 ```
+## 5. Média Salarial Anual (`AVG`)
 
+### Consulta utilizada para calcular a média da renda anual (`YearlyIncome`) dos clientes cadastrados na tabela `DimCustomer`.
+
+```sql
+SELECT 
+    AVG(YearlyIncome) AS MediaSalarioAnual
+FROM DimCustomer
+
+💡 Dica: A função AVG() calcula apenas a média dos valores não nulos. Caso existam registros com NULL, eles serão ignorados no cálculo do divisor da média.
+```
 
