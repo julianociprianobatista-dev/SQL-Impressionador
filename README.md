@@ -41,7 +41,7 @@ ORDER BY [ID_Cliente] ASC;
 Consultas e scripts focados em **Microsoft SQL Server**:
 
 * 📄 [01 - Comandos Básicos](./SQL-Server/01-comandos-basicos.md) *(SELECT, WHERE, TOP, ORDER BY)*
-* 📄 02 - Funções de Agregação *(em construção — GROUP BY, HAVING, COUNT, SUM, AVG)*
+* 📄 [02 - Funções de Agregação](./SQL-Server/02-funcoes-de-agregacao.md)  *(GROUP BY, HAVING, COUNT, SUM, AVG)*
 * 📄 03 - JOINs e Relacionamentos *(em construção — INNER JOIN, LEFT JOIN, RIGHT JOIN)*
 * 📄 04 - Subqueries e Views *(em construção — Subconsultas e Views)*
 * 📄 05 - Funções de Janela *(em construção — ROW_NUMBER, RANK, OVER)*
