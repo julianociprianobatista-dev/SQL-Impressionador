@@ -30,4 +30,15 @@ FROM DimProduct;
 
 ⚠️ Nota: Cuidado ao passar uma coluna dentro do COUNT(nome_coluna), pois valores nulos (NULL) são ignorados na contagem. Para obter a quantidade real de linhas da tabela, prefira utilizar COUNT(*)
 ```
+## 3. Contagem de Valores Distintos (`COUNT` + `DISTINCT`)
 
+### Consulta utilizada para contar quantas marcas **únicas** existem na tabela de produtos, desconsiderando as repetições de marca entre os registros.
+
+```sql
+SELECT 
+    COUNT(DISTINCT BrandName) AS 'QtdMarcasUnicas'
+FROM
+     DimProduct
+
+💡 Dica: O uso do DISTINCT dentro do COUNT() garante que cada marca seja contada apenas uma vez, independentemente de quantos produtos estejam associados a ela na tabela.
+```
