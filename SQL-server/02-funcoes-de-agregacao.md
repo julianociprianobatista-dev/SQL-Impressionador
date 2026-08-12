@@ -86,3 +86,90 @@ FROM
 ```
 
 > 💡 **Dica:** a função `AVG()` calcula apenas a média dos valores não nulos. Registros com `NULL` são ignorados no cálculo, inclusive no divisor da média.
+
+## 6. Agrupamento com Contagem (`GROUP BY` + `COUNT`)
+
+Conta quantos produtos existem por marca, agrupando os resultados pela coluna `BrandName`.
+
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimProduct
+
+-- Contar produtos por marca
+SELECT
+    BrandName AS [NomeDaMarca],
+    COUNT(*)  AS [QtdTotal]
+FROM
+    DimProduct
+GROUP BY
+    BrandName
+```
+
+## 7. Agrupamento com Soma (`GROUP BY` + `SUM`)
+
+Soma o total de funcionários por tipo de loja.
+
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimStore
+
+-- Somar funcionários por tipo de loja
+SELECT
+    StoreType,
+    SUM(EmployeeCount) AS [TotalFuncionarios]
+FROM
+    DimStore
+GROUP BY
+    StoreType
+```
+
+## 8. Agrupamento com Média (`GROUP BY` + `AVG`)
+
+Calcula o custo médio unitário por marca.
+
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimProduct
+
+-- Calcular custo médio por marca
+SELECT
+    BrandName,
+    AVG(UnitCost) AS [CustoMedio]
+FROM
+    DimProduct
+GROUP BY
+    BrandName
+```
+
+## 9. Agrupamento com Valor Máximo (`GROUP BY` + `MAX`)
+
+Encontra o maior preço unitário por classe de produto (`ClassName`).
+
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimProduct
+
+-- Encontrar o preço máximo por classe
+SELECT
+    ClassName,
+    MAX(UnitPrice) AS [PrecoMaximo]
+FROM
+    DimProduct
+GROUP BY
+    ClassName
+```
+
+> ⚠️ **Regra do `GROUP BY`:** toda coluna que aparece no `SELECT` e **não** está dentro de uma função de agregação (`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`...) precisa obrigatoriamente estar listada no `GROUP BY`. Se você esquecer, o SQL Server recusa a consulta com erro de sintaxe/validação.
+
