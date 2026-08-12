@@ -198,3 +198,27 @@ ORDER BY
  
 > 💡 **Dica:** o `ORDER BY` pode referenciar tanto o alias (`ORDER BY TotalFuncionarios DESC`) quanto a expressão completa (`ORDER BY SUM(EmployeeCount) DESC`) — as duas formas funcionam no SQL Server. Usar o alias costuma deixar a consulta mais legível.
  
+ ## 11. Filtrando Antes do Agrupamento (`GROUP BY` + `WHERE`)
+ 
+Conta quantos produtos da marca Contoso existem por cor, aplicando o filtro de marca **antes** de agrupar os resultados.
+ 
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimProduct
+ 
+-- Contar produtos por cor, apenas da marca Contoso
+SELECT
+    ColorName AS [CorDoProduto],
+    COUNT(*)  AS [TotalDeProdutos]
+FROM
+    DimProduct
+WHERE
+    BrandName = 'Contoso' -- Filtro aplicado antes do agrupamento
+GROUP BY
+    ColorName
+```
+ 
+> ⚠️ **WHERE vs. HAVING:** o `WHERE` filtra as linhas **antes** do agrupamento — ou seja, só os registros que passam pelo filtro entram no cálculo do `GROUP BY`. Já o `HAVING` (que veremos a seguir) filtra **depois** do agrupamento, atuando sobre o resultado agregado. Usar o errado pode gerar resultados inesperados sem nenhum erro de sintaxe.
