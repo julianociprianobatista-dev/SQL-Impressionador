@@ -173,3 +173,28 @@ GROUP BY
 
 > ⚠️ **Regra do `GROUP BY`:** toda coluna que aparece no `SELECT` e **não** está dentro de uma função de agregação (`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`...) precisa obrigatoriamente estar listada no `GROUP BY`. Se você esquecer, o SQL Server recusa a consulta com erro de sintaxe/validação.
 
+## 10. Agrupamento com Ordenação (`GROUP BY` + `ORDER BY`)
+ 
+Soma o total de funcionários por tipo de loja e ordena o resultado do maior para o menor total.
+ 
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimStore
+ 
+-- Somar funcionários por tipo de loja, ordenado do maior para o menor
+SELECT
+    StoreType,
+    SUM(EmployeeCount) AS [TotalFuncionarios]
+FROM
+    DimStore
+GROUP BY
+    StoreType
+ORDER BY
+    SUM(EmployeeCount) DESC
+```
+ 
+> 💡 **Dica:** o `ORDER BY` pode referenciar tanto o alias (`ORDER BY TotalFuncionarios DESC`) quanto a expressão completa (`ORDER BY SUM(EmployeeCount) DESC`) — as duas formas funcionam no SQL Server. Usar o alias costuma deixar a consulta mais legível.
+ 
