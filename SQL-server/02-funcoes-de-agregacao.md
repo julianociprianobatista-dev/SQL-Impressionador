@@ -222,3 +222,30 @@ GROUP BY
 ```
  
 > ⚠️ **WHERE vs. HAVING:** o `WHERE` filtra as linhas **antes** do agrupamento — ou seja, só os registros que passam pelo filtro entram no cálculo do `GROUP BY`. Já o `HAVING` (que veremos a seguir) filtra **depois** do agrupamento, atuando sobre o resultado agregado. Usar o errado pode gerar resultados inesperados sem nenhum erro de sintaxe.
+
+## 12. Filtrando Depois do Agrupamento (`GROUP BY` + `HAVING`)
+ 
+Conta quantos produtos de classe `Regular` existem por marca, exibindo apenas as marcas com 100 ou mais produtos nessa categoria.
+ 
+```sql
+-- Visualizar amostra dos dados
+SELECT TOP (100)
+    *
+FROM
+    DimProduct
+ 
+-- Contar produtos por marca, filtrando antes e depois do agrupamento
+SELECT
+    BrandName AS [Marca],
+    COUNT(BrandName) AS [TotalPorMarca]
+FROM
+    DimProduct
+WHERE
+    ClassName = 'Regular'   -- Filtra a tabela original, antes do agrupamento
+GROUP BY
+    BrandName
+HAVING
+    COUNT(BrandName) >= 100 -- Filtra o resultado depois de agrupado
+```
+ 
+> 💡 **Resumindo a ordem de execução:** `WHERE` (filtra linhas) → `GROUP BY` (agrupa) → `HAVING` (filtra grupos). O `HAVING` só existe por conta do `GROUP BY` — sem agrupamento, use sempre o `WHERE`.
