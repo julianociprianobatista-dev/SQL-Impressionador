@@ -23,7 +23,7 @@ Antes de entrar nas consultas, é importante entender o que cada tipo de JOIN re
 
 ---
 
-## 13. `RIGHT JOIN` — todas as linhas da tabela da direita
+## 1. `RIGHT JOIN` — todas as linhas da tabela da direita
 
 Retorna todas as subcategorias, independentemente de terem produtos associados. Para os produtos que existem, traz também os dados do produto.
 
@@ -246,3 +246,34 @@ LEFT JOIN DimProductSubcategory
 
 > 💡 **Compare os resultados:** rode as três queries e observe a diferença na quantidade de linhas retornadas e onde aparecem os `NULL`. Esse exercício é a forma mais rápida de fixar intuitivamente o comportamento de cada tipo de JOIN.
 
+## 7. Como escolher a tabela da esquerda e da direita?
+
+Uma dúvida comum: qual tabela vai antes e qual vai depois do JOIN? A regra prática é simples — **a tabela que você quer preservar completamente vai do lado do `LEFT`**. As duas consultas abaixo retornam o mesmo resultado, demonstrando que `LEFT JOIN` e `RIGHT JOIN` são intercambiáveis dependendo da ordem das tabelas.
+
+**Caso 1 — `LEFT JOIN`:** `produtos` é a tabela principal (esquerda), complementada por `subcategoria`:
+
+```sql
+SELECT
+    id_produto,
+    produtos.id_subcategoria,
+    nome_subcategoria
+FROM
+    produtos
+LEFT JOIN subcategoria
+    ON produtos.id_subcategoria = subcategoria.id_subcategoria
+```
+
+**Caso 2 — `RIGHT JOIN` equivalente:** mesma lógica, tabelas invertidas de lado:
+
+```sql
+SELECT
+    id_produto,
+    produtos.id_subcategoria,
+    nome_subcategoria
+FROM
+    subcategoria
+RIGHT JOIN produtos
+    ON subcategoria.id_subcategoria = produtos.id_subcategoria
+```
+
+> 💡 **Conclusão:** `LEFT JOIN` com `produtos` à esquerda e `RIGHT JOIN` com `produtos` à direita produzem exatamente o mesmo resultado. Por convenção, prefira sempre o `LEFT JOIN` — é mais legível e evita que o leitor precise "virar" mentalmente a ordem das tabelas pra entender a query.
