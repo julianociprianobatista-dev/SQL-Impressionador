@@ -23,7 +23,7 @@ Antes de entrar nas consultas, é importante entender o que cada tipo de JOIN re
 
 ---
 
-## 1. `RIGHT JOIN` — todas as linhas da tabela da direita
+## 13. `RIGHT JOIN` — todas as linhas da tabela da direita
 
 Retorna todas as subcategorias, independentemente de terem produtos associados. Para os produtos que existem, traz também os dados do produto.
 
@@ -85,14 +85,14 @@ INNER JOIN subcategoria
 > 💡 **INNER JOIN é o padrão:** em queries com múltiplas tabelas, `INNER JOIN` é o tipo mais comum. Ele garante que só aparecem no resultado registros que têm correspondência nos dois lados — nenhum `NULL` "vaza" pro resultado por falta de par.
 
 ## 3. `FULL JOIN` — todas as linhas das duas tabelas
- 
+
 Retorna todos os registros de ambas as tabelas, com ou sem correspondência. Onde não houver par, o SQL Server preenche as colunas da tabela sem correspondência com `NULL`.
- 
+
 ```sql
 -- Visualizar amostra das tabelas envolvidas
 SELECT TOP (100) * FROM produtos
 SELECT TOP (100) * FROM subcategoria
- 
+
 -- FULL JOIN: todos os produtos e todas as subcategorias, com ou sem par
 SELECT
     produtos.id_produto,
@@ -104,20 +104,20 @@ FROM
 FULL JOIN subcategoria
     ON produtos.id_subcategoria = subcategoria.id_subcategoria
 ```
- 
+
 > 💡 **Quando usar FULL JOIN:** é o tipo mais raro na prática. O caso de uso mais comum é auditoria e diagnóstico de integridade — por exemplo, encontrar produtos sem subcategoria cadastrada **e** subcategorias sem nenhum produto associado, tudo em uma única consulta. Em relatórios do dia a dia, `INNER JOIN` ou `LEFT JOIN` costumam ser suficientes.
- 
+
 > ⚠️ **Cuidado com o volume de dados:** em tabelas grandes, `FULL JOIN` pode retornar um volume muito maior de linhas do que o esperado, especialmente se houver muitos registros sem correspondência. Sempre combine com filtros ou analise o resultado com `COUNT(*)` antes de usar em produção.
- 
- ## 4. `LEFT JOIN` — todas as linhas da tabela da esquerda
- 
+
+## 4. `LEFT JOIN` — todas as linhas da tabela da esquerda
+
 Retorna todos os produtos, independentemente de terem uma subcategoria correspondente. Para os produtos sem par em `subcategoria`, as colunas dessa tabela aparecem como `NULL`.
- 
+
 ```sql
 -- Visualizar amostra das tabelas envolvidas
 SELECT TOP (100) * FROM produtos
 SELECT TOP (100) * FROM subcategoria
- 
+
 -- LEFT JOIN: todos os produtos, com ou sem subcategoria correspondente
 SELECT
     produtos.id_produto,
@@ -129,21 +129,21 @@ FROM
 LEFT JOIN subcategoria
     ON produtos.id_subcategoria = subcategoria.id_subcategoria
 ```
- 
+
 > 💡 **LEFT JOIN é o segundo mais usado**, logo após o `INNER JOIN`. Sempre que você precisar de "todos os registros de uma tabela, mais o que existir na outra", o `LEFT JOIN` é a escolha certa.
- 
+
 ## 5. ANTI JOINs — encontrando registros sem correspondência
- 
+
 ANTI JOIN não é um comando SQL — é um **padrão** que combina `LEFT`, `RIGHT` ou `FULL JOIN` com `WHERE coluna IS NULL` para retornar apenas os registros que **não têm par** na outra tabela. É muito útil para auditoria e diagnóstico de integridade de dados.
- 
+
 ```sql
 -- Visualizar amostra das tabelas envolvidas
 SELECT TOP (100) * FROM produtos
 SELECT TOP (100) * FROM subcategoria
 ```
- 
+
 **LEFT ANTI JOIN** — produtos que não têm subcategoria correspondente:
- 
+
 ```sql
 SELECT
     produtos.id_produto,
@@ -157,9 +157,9 @@ LEFT JOIN subcategoria
 WHERE
     subcategoria.nome_subcategoria IS NULL
 ```
- 
+
 **RIGHT ANTI JOIN** — subcategorias que não têm nenhum produto associado:
- 
+
 ```sql
 SELECT
     produtos.id_produto,
@@ -173,9 +173,9 @@ RIGHT JOIN subcategoria
 WHERE
     produtos.id_produto IS NULL
 ```
- 
+
 **FULL ANTI JOIN** — registros sem correspondência em qualquer um dos lados:
- 
+
 ```sql
 SELECT
     produtos.id_produto,
@@ -189,5 +189,60 @@ FULL JOIN subcategoria
 WHERE
     produtos.id_produto IS NULL OR subcategoria.nome_subcategoria IS NULL
 ```
- 
+
 > 💡 **Resumindo os ANTI JOINs:** `LEFT ANTI JOIN` = "o que existe em A mas não em B"; `RIGHT ANTI JOIN` = "o que existe em B mas não em A"; `FULL ANTI JOIN` = "o que não tem par em nenhum dos lados". São ferramentas poderosas para encontrar inconsistências e dados órfãos no banco.
+
+## 6. Comparativo prático: `INNER JOIN`, `RIGHT JOIN` e `LEFT JOIN`
+
+As três consultas abaixo usam as mesmas tabelas, as mesmas colunas e a mesma condição no `ON` — só o tipo de JOIN muda. O objetivo é visualizar na prática como cada um afeta o resultado.
+
+```sql
+-- Visualizar amostra das tabelas envolvidas
+SELECT TOP (100) ProductKey, ProductName, ProductSubcategoryKey FROM DimProduct
+SELECT TOP (100) ProductSubcategoryKey, ProductSubcategoryName FROM DimProductSubcategory
+```
+
+**INNER JOIN** — apenas produtos que possuem subcategoria correspondente:
+
+```sql
+SELECT
+    ProductKey,
+    ProductName,
+    DimProduct.ProductSubcategoryKey,
+    ProductSubcategoryName
+FROM
+    DimProduct
+INNER JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+```
+
+**RIGHT JOIN** — todas as subcategorias, com ou sem produto correspondente:
+
+```sql
+SELECT
+    ProductKey,
+    ProductName,
+    DimProduct.ProductSubcategoryKey,
+    ProductSubcategoryName
+FROM
+    DimProduct
+RIGHT JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+```
+
+**LEFT JOIN** — todos os produtos, com ou sem subcategoria correspondente:
+
+```sql
+SELECT
+    ProductKey,
+    ProductName,
+    DimProduct.ProductSubcategoryKey,
+    ProductSubcategoryName
+FROM
+    DimProduct
+LEFT JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+```
+
+> 💡 **Compare os resultados:** rode as três queries e observe a diferença na quantidade de linhas retornadas e onde aparecem os `NULL`. Esse exercício é a forma mais rápida de fixar intuitivamente o comportamento de cada tipo de JOIN.
+
