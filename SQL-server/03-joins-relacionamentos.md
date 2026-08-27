@@ -277,3 +277,25 @@ RIGHT JOIN produtos
 ```
 
 > 💡 **Conclusão:** `LEFT JOIN` com `produtos` à esquerda e `RIGHT JOIN` com `produtos` à direita produzem exatamente o mesmo resultado. Por convenção, prefira sempre o `LEFT JOIN` — é mais legível e evita que o leitor precise "virar" mentalmente a ordem das tabelas pra entender a query.
+
+## 8. `CROSS JOIN` — produto cartesiano entre duas tabelas
+ 
+O `CROSS JOIN` combina **cada linha** da primeira tabela com **todas as linhas** da segunda, sem nenhuma condição de correspondência. É o único tipo de JOIN que não usa `ON`.
+ 
+```sql
+-- Visualizar amostra das tabelas envolvidas
+SELECT TOP (100) * FROM marcas
+SELECT TOP (100) * FROM subcategoria
+ 
+-- CROSS JOIN: cada marca combinada com cada subcategoria
+SELECT
+    marca,
+    nome_subcategoria
+FROM
+    marcas
+CROSS JOIN subcategoria
+```
+ 
+> ⚠️ **Cuidado com o volume:** o resultado é o **produto cartesiano** das duas tabelas — se `marcas` tem 10 linhas e `subcategoria` tem 20, o resultado terá 200 linhas. Em tabelas com milhares de registros isso pode gerar milhões de linhas e travar o servidor. Sempre teste com `TOP` ou `COUNT(*)` antes de rodar em produção.
+ 
+> 💡 **Quando usar CROSS JOIN:** é raro no dia a dia, mas tem casos de uso legítimos — gerar todas as combinações possíveis entre dois conjuntos (ex: todas as combinações de tamanho e cor de um produto, calendários, matrizes de preço). Fora desses cenários específicos, um `CROSS JOIN` acidental (esquecendo o `ON` num JOIN normal) é quase sempre um bug.
