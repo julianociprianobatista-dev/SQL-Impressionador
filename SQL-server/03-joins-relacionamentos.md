@@ -299,3 +299,34 @@ CROSS JOIN subcategoria
 > ⚠️ **Cuidado com o volume:** o resultado é o **produto cartesiano** das duas tabelas — se `marcas` tem 10 linhas e `subcategoria` tem 20, o resultado terá 200 linhas. Em tabelas com milhares de registros isso pode gerar milhões de linhas e travar o servidor. Sempre teste com `TOP` ou `COUNT(*)` antes de rodar em produção.
  
 > 💡 **Quando usar CROSS JOIN:** é raro no dia a dia, mas tem casos de uso legítimos — gerar todas as combinações possíveis entre dois conjuntos (ex: todas as combinações de tamanho e cor de um produto, calendários, matrizes de preço). Fora desses cenários específicos, um `CROSS JOIN` acidental (esquecendo o `ON` num JOIN normal) é quase sempre um bug.
+
+## 9. Múltiplos JOINs encadeados
+ 
+É possível encadear vários JOINs em uma única consulta, conectando três ou mais tabelas em sequência. Cada novo JOIN se apoia no resultado do anterior — a ordem importa.
+ 
+Neste exemplo, partimos de `DimProduct`, subimos para `DimProductSubcategory` e depois para `DimProductCategory`, trazendo o nome do produto, da subcategoria e da categoria em uma única consulta.
+ 
+```sql
+-- Visualizar amostra das três tabelas envolvidas
+SELECT TOP (100) ProductKey, ProductName, ProductSubcategoryKey FROM DimProduct
+SELECT TOP (100) ProductCategoryKey, ProductSubcategoryName, ProductSubcategoryKey FROM DimProductSubcategory
+SELECT TOP (100) ProductCategoryKey, ProductCategoryName FROM DimProductCategory
+ 
+-- Três tabelas conectadas em sequência via INNER JOIN
+SELECT
+    ProductKey,
+    ProductName,
+    DimProduct.ProductSubcategoryKey,
+    ProductSubcategoryName,
+    ProductCategoryName
+FROM
+    DimProduct
+INNER JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+INNER JOIN DimProductCategory
+    ON DimProductSubcategory.ProductCategoryKey = DimProductCategory.ProductCategoryKey
+```
+ 
+> 💡 **Lendo JOINs encadeados:** leia de cima pra baixo — cada `ON` conecta a tabela recém-adicionada com alguma tabela já presente na consulta. Aqui: `DimProduct` conecta com `DimProductSubcategory` pela chave de subcategoria, e `DimProductSubcategory` conecta com `DimProductCategory` pela chave de categoria.
+ 
+> ⚠️ **Cuidado com colunas de mesmo nome em múltiplos JOINs:** quanto mais tabelas, maior a chance de colisão de nomes. Qualifique sempre as colunas ambíguas com o nome da tabela (`DimProduct.ProductSubcategoryKey`), como feito nessa consulta.
