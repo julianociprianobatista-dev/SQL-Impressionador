@@ -330,3 +330,50 @@ INNER JOIN DimProductCategory
 > 💡 **Lendo JOINs encadeados:** leia de cima pra baixo — cada `ON` conecta a tabela recém-adicionada com alguma tabela já presente na consulta. Aqui: `DimProduct` conecta com `DimProductSubcategory` pela chave de subcategoria, e `DimProductSubcategory` conecta com `DimProductCategory` pela chave de categoria.
  
 > ⚠️ **Cuidado com colunas de mesmo nome em múltiplos JOINs:** quanto mais tabelas, maior a chance de colisão de nomes. Qualifique sempre as colunas ambíguas com o nome da tabela (`DimProduct.ProductSubcategoryKey`), como feito nessa consulta.
+
+## 10. `UNION` e `UNION ALL` — combinando resultados verticalmente
+ 
+Enquanto os JOINs combinam tabelas **horizontalmente** (adicionando colunas), o `UNION` combina resultados **verticalmente** (empilhando linhas). As queries combinadas precisam ter o mesmo número de colunas e tipos compatíveis.
+ 
+**`UNION`** — empilha os resultados e **remove duplicatas** automaticamente (como um `DISTINCT` implícito):
+ 
+```sql
+SELECT
+    *
+FROM
+    DimCustomer
+WHERE
+    Gender = 'F'
+UNION
+SELECT
+    *
+FROM
+    DimCustomer
+WHERE
+    Gender = 'M'
+```
+ 
+**`UNION ALL`** — empilha os resultados e **mantém todas as linhas**, incluindo duplicatas:
+ 
+```sql
+SELECT
+    FirstName,
+    BirthDate
+FROM
+    DimCustomer
+WHERE
+    Gender = 'F'
+UNION ALL
+SELECT
+    FirstName,
+    BirthDate
+FROM
+    DimCustomer
+WHERE
+    Gender = 'M'
+```
+ 
+> ⚠️ **`SELECT *` com `UNION`** funciona quando as duas queries vêm da mesma tabela (como no exemplo acima). Em tabelas diferentes, as colunas precisam ser compatíveis em número e tipo na mesma ordem — usar `SELECT *` em tabelas distintas quase sempre gera erro. Prefira listar as colunas explicitamente.
+ 
+> 💡 **`UNION` vs. `UNION ALL`:** prefira sempre `UNION ALL` quando souber que não há duplicatas ou quando não precisar removê-las — ele é significativamente mais rápido porque não precisa fazer a verificação de duplicidade. Use `UNION` apenas quando a remoção de duplicatas for realmente necessária.
+ 
