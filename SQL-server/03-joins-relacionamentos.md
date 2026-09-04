@@ -551,4 +551,29 @@ LEFT JOIN DimStore
 ORDER BY
     SalesAmount DESC
 ```
+ ## 12. `GROUP BY` com `JOIN`
  
+Combinar `JOIN` com `GROUP BY` é o padrão mais comum em consultas analíticas — permite agregar dados de múltiplas tabelas em uma única visão resumida. Neste exemplo, cruzamos `FactSales` com `DimDate` para somar as vendas por ano, filtrando apenas o mês de janeiro e exibindo só os anos com mais de 1.200.000 unidades vendidas.
+ 
+```sql
+-- Visualizar amostra das tabelas envolvidas
+SELECT TOP (100) * FROM FactSales
+SELECT TOP (100) * FROM DimDate
+ 
+-- Total vendido por ano em janeiro, apenas anos acima de 1.200.000 unidades
+SELECT
+    CalendarYear       AS [Ano],
+    SUM(SalesQuantity) AS [TotalVendido]
+FROM
+    FactSales
+INNER JOIN DimDate
+    ON FactSales.DateKey = DimDate.Datekey
+WHERE
+    CalendarMonthLabel = 'January'
+GROUP BY
+    CalendarYear
+HAVING
+    SUM(SalesQuantity) >= 1200000
+```
+ 
+> 💡 **Ordem de execução completa:** `JOIN` (une as tabelas) → `WHERE` (filtra linhas) → `GROUP BY` (agrupa) → `HAVING` (filtra grupos) → `ORDER BY` (ordena). Entender essa sequência é essencial para saber onde cada filtro deve ser aplicado e por que `WHERE` não pode referenciar funções de agregação.
