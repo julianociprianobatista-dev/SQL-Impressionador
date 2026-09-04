@@ -377,3 +377,178 @@ WHERE
  
 > 💡 **`UNION` vs. `UNION ALL`:** prefira sempre `UNION ALL` quando souber que não há duplicatas ou quando não precisar removê-las — ele é significativamente mais rápido porque não precisa fazer a verificação de duplicidade. Use `UNION` apenas quando a remoção de duplicatas for realmente necessária.
  
+ ## 11. Exercícios de fixação: JOINs
+ 
+**1.** Trazer o nome das subcategorias dos produtos, da tabela `DimProductSubcategory` para a tabela `DimProduct`.
+ 
+```sql
+SELECT
+    ProductName                              AS [Produto],
+    DimProduct.ProductSubcategoryKey,
+    DimProductSubcategory.ProductSubcategoryName
+FROM
+    DimProduct
+INNER JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+```
+ 
+**2.** Complementar `DimProductSubcategory` com o nome da categoria a partir de `DimProductCategory`.
+ 
+```sql
+SELECT
+    ProductSubcategoryKey AS [ID Subcategoria],
+    ProductSubcategoryName AS [Subcategoria],
+    DimProductCategory.ProductCategoryName AS [Categoria]
+FROM
+    DimProductSubcategory
+LEFT JOIN DimProductCategory
+    ON DimProductSubcategory.ProductCategoryKey = DimProductCategory.ProductCategoryKey
+```
+ 
+**3.** Para cada loja de `DimStore`, descobrir o continente e o país associados (`DimGeography`).
+ 
+```sql
+SELECT
+    DimStore.StoreKey        AS [ID Loja],
+    DimStore.StoreName       AS [Loja],
+    DimStore.EmployeeCount   AS [QtdFuncionarios],
+    DimGeography.ContinentName       AS [Continente],
+    DimGeography.RegionCountryName   AS [Pais]
+FROM
+    DimStore
+LEFT JOIN DimGeography
+    ON DimStore.GeographyKey = DimGeography.GeographyKey
+```
+ 
+**4.** Complementar `DimProduct` com `ProductCategoryDescription`, retornando 5 colunas via múltiplos JOINs.
+ 
+```sql
+SELECT
+    DimProduct.ProductKey                               AS [ID Produto],
+    DimProduct.ProductName                              AS [Nome Produto],
+    DimProduct.ProductDescription                       AS [Descricao],
+    DimProductSubcategory.ProductSubcategoryDescription AS [Subcategoria],
+    DimProductCategory.ProductCategoryDescription       AS [Categoria]
+FROM
+    DimProduct
+LEFT JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+LEFT JOIN DimProductCategory
+    ON DimProductSubcategory.ProductCategoryKey = DimProductCategory.ProductCategoryKey
+```
+ 
+**5.** Relacionar `FactStrategyPlan` com `DimAccount` para trazer o nome da conta em cada linha.
+ 
+```sql
+-- a) Reconhecer as tabelas
+SELECT TOP (100) * FROM FactStrategyPlan
+SELECT TOP (100) * FROM DimAccount
+ 
+-- b) INNER JOIN trazendo AccountName
+SELECT
+    StrategyPlanKey,
+    DateKey,
+    AccountName,
+    Amount
+FROM
+    FactStrategyPlan
+INNER JOIN DimAccount
+    ON FactStrategyPlan.AccountKey = DimAccount.AccountKey
+```
+ 
+**6.** Relacionar `FactStrategyPlan` com `DimScenario` para trazer o nome do cenário em cada linha.
+ 
+```sql
+SELECT TOP (100) * FROM FactStrategyPlan
+SELECT TOP (100) * FROM DimScenario
+ 
+SELECT
+    StrategyPlanKey,
+    DateKey,
+    ScenarioName,
+    Amount
+FROM
+    FactStrategyPlan
+INNER JOIN DimScenario
+    ON FactStrategyPlan.ScenarioKey = DimScenario.ScenarioKey
+```
+ 
+**7.** Identificar subcategorias que não possuem nenhum produto associado (RIGHT ANTI JOIN).
+ 
+```sql
+SELECT TOP (100) * FROM DimProduct
+SELECT TOP (100) * FROM DimProductSubcategory
+ 
+SELECT
+    ProductSubcategoryName
+FROM
+    DimProduct
+RIGHT JOIN DimProductSubcategory
+    ON DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+WHERE
+    ProductName IS NULL
+```
+ 
+**8.** Gerar todas as combinações entre marca e canal de venda para Contoso, Fabrikam e Litware (CROSS JOIN).
+ 
+```sql
+SELECT TOP (100) * FROM DimProduct
+SELECT TOP (100) * FROM DimChannel
+ 
+SELECT DISTINCT
+    BrandName,
+    ChannelName
+FROM
+    DimProduct
+CROSS JOIN DimChannel
+WHERE
+    BrandName IN ('Contoso', 'Fabrikam', 'Litware')
+```
+ 
+**9.** Relacionar `FactOnlineSales` com `DimPromotion`, retornando apenas vendas com desconto aplicado, ordenadas por data.
+ 
+```sql
+SELECT TOP (100) * FROM FactOnlineSales
+SELECT TOP (100) * FROM DimPromotion
+ 
+SELECT TOP (1000)
+    OnlineSalesKey,
+    DateKey,
+    PromotionName,
+    SalesAmount
+FROM
+    FactOnlineSales
+INNER JOIN DimPromotion
+    ON FactOnlineSales.PromotionKey = DimPromotion.PromotionKey
+WHERE
+    PromotionName <> 'No Discount'
+ORDER BY
+    DateKey ASC
+```
+ 
+**10.** Relacionar `FactSales` com `DimChannel`, `DimProduct` e `DimStore`, ordenando por `SalesAmount` decrescente.
+ 
+```sql
+SELECT TOP (100) * FROM FactSales
+SELECT TOP (100) * FROM DimChannel
+SELECT TOP (100) * FROM DimProduct
+SELECT TOP (100) * FROM DimStore
+ 
+SELECT TOP (100)
+    SalesKey,
+    ChannelName,
+    StoreName,
+    ProductName,
+    SalesAmount
+FROM
+    FactSales
+LEFT JOIN DimChannel
+    ON FactSales.ChannelKey = DimChannel.ChannelKey
+LEFT JOIN DimProduct
+    ON FactSales.ProductKey = DimProduct.ProductKey
+LEFT JOIN DimStore
+    ON FactSales.StoreKey = DimStore.StoreKey
+ORDER BY
+    SalesAmount DESC
+```
+ 
