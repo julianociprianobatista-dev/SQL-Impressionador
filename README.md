@@ -43,7 +43,7 @@ Consultas e scripts focados em **Microsoft SQL Server**:
 * 📄 [01 - Comandos Básicos](./SQL-server/01-comandos-basicos.md) *(SELECT, WHERE, TOP, ORDER BY)*
 * 📄 [02 - Funções de Agregação](./SQL-server/02-funcoes-de-agregacao.md) *(GROUP BY, HAVING, agrupamentos, GROUP BY + JOINs)*
 * 📄 [03 - JOINs e Relacionamentos](./SQL-server/03-joins-relacionamentos.md) *(em construção — INNER JOIN, LEFT JOIN, RIGHT JOIN)*
-* 📄 04 - Variáveis e Manipulação de Dados *(em construção — variáveis, strings, datas, funções condicionais)*
+* 📄 [04 - Variáveis e Manipulação de Dados](./SQL-server/04-variaveis.md)*
 * 📄 05 - Views e CRUD *(em construção — SQL Views, CRUD)*
 * 📄 06 - Subqueries e CTEs *(em construção)*
 * 📄 07 - Estruturas de Controle *(em construção — loops no SQL)*
