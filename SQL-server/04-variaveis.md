@@ -141,4 +141,34 @@ SELECT 'A data de validade é: ' + FORMAT(CAST('17/04/2022' AS DATETIME), 'dd/MM
 ```
  
 > ⚠️ `FORMAT` sempre retorna `VARCHAR` — por isso é possível concatenar diretamente com texto. O `CAST` antes da data garante que a string seja interpretada como `DATETIME` antes de aplicar a formatação.
+
+## 5. Funções de Arredondamento (`ROUND`, `FLOOR`, `CEILING`)
+ 
+**`ROUND`** — arredonda um número para a quantidade de casas decimais informada:
+ 
+```sql
+SELECT ROUND(18.739130, 2) -- resultado: 18.740000 (arredonda para 2 casas)
+```
+ 
+**`ROUND` com truncamento** — o terceiro parâmetro `1` substitui o arredondamento por truncamento (simplesmente corta as casas excedentes, sem arredondar):
+ 
+```sql
+SELECT ROUND(18.739130, 3, 1) -- resultado: 18.739000 (trunca, não arredonda)
+```
+ 
+> 💡 `ROUND(valor, casas)` arredonda normalmente. `ROUND(valor, casas, 1)` trunca — o `1` no terceiro parâmetro é o que muda o comportamento. Qualquer valor diferente de zero no terceiro parâmetro ativa o truncamento.
+ 
+**`FLOOR`** — arredonda sempre para baixo, retornando o maior inteiro menor ou igual ao valor:
+ 
+```sql
+SELECT FLOOR(18.739130) -- resultado: 18
+```
+ 
+**`CEILING`** — arredonda sempre para cima, retornando o menor inteiro maior ou igual ao valor:
+ 
+```sql
+SELECT CEILING(18.739130) -- resultado: 19
+```
+ 
+> 💡 **Resumindo:** `ROUND` segue a regra matemática padrão; `FLOOR` sempre vai para baixo (como "andar de baixo"); `CEILING` sempre vai para cima (como "teto"). Em cálculos financeiros, a escolha entre os três impacta diretamente o resultado — use com atenção.
  
