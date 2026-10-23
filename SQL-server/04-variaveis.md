@@ -172,3 +172,77 @@ SELECT CEILING(18.739130) -- resultado: 19
  
 > 💡 **Resumindo:** `ROUND` segue a regra matemática padrão; `FLOOR` sempre vai para baixo (como "andar de baixo"); `CEILING` sempre vai para cima (como "teto"). Em cálculos financeiros, a escolha entre os três impacta diretamente o resultado — use com atenção.
  
+ ## 6. Variáveis — Parte 1: aplicando desconto com `DECLARE` e `SET`
+ 
+Variáveis permitem armazenar um valor temporário e reutilizá-lo em uma ou mais consultas. São declaradas com `DECLARE` e recebem valor com `SET`. No SQL Server, toda variável começa com `@`.
+ 
+**Raciocínio do cálculo:**
+- Preço original: `100`
+- Desconto: `10% = 0.10`
+- Preço com desconto: `100 * (1 - 0.10) = 90`
+- Generalizado: `UnitPrice * (1 - @varDesconto)`
+**Exercício:** aplicar 10% de desconto em todos os preços da tabela `DimProduct`.
+ 
+```sql
+-- Visualizar amostra da tabela
+SELECT TOP (100) * FROM DimProduct
+ 
+-- Declarar e atribuir a variável de desconto
+DECLARE @varDesconto FLOAT
+SET @varDesconto = 0.10
+ 
+-- Aplicar o desconto na consulta
+SELECT
+    DimProduct.ProductKey                        AS [ID],
+    DimProduct.ProductName                       AS [NomeDoProduto],
+    DimProduct.UnitPrice                         AS [PrecoDoProduto],
+    DimProduct.UnitPrice * (1 - @varDesconto)    AS [PrecoComDesconto]
+FROM
+    DimProduct
+```
+ 
+> 💡 **Vantagem da variável:** se o desconto mudar de 10% para 15%, basta alterar o valor no `SET` — a query inteira se atualiza automaticamente, sem precisar editar cada linha do `SELECT`.
+ 
+## 7. Variáveis — Parte 2: filtrando por data com `DECLARE` e `UNION`
+ 
+Variáveis de data são especialmente úteis em queries com `UNION` — evitam repetir o mesmo valor de filtro em cada bloco da consulta.
+ 
+**Exercício:** retornar clientes e funcionários nascidos a partir de 01/01/1980, identificando o tipo de cada pessoa.
+ 
+```sql
+-- Declarar e atribuir a variável de data
+DECLARE @varData DATETIME
+SET @varData = '01/01/1980'
+ 
+-- Clientes nascidos a partir da data
+SELECT
+    FirstName  AS [Nome],
+    LastName   AS [Sobrenome],
+    BirthDate  AS [Nascimento],
+    'Cliente'  AS [Tipo]
+FROM
+    DimCustomer
+WHERE
+    BirthDate >= @varData
+ 
+UNION
+ 
+-- Funcionários nascidos a partir da data
+SELECT
+    FirstName      AS [Nome],
+    LastName       AS [Sobrenome],
+    BirthDate      AS [Nascimento],
+    'Funcionário'  AS [Tipo]
+FROM
+    DimEmployee
+WHERE
+    BirthDate >= @varData
+ORDER BY
+    Nascimento
+```
+ 
+> 💡 Com a variável `@varData`, basta alterar o `SET` para mudar o filtro de data nos dois blocos do `UNION` de uma só vez. Sem a variável, seria necessário editar `'01/01/1980'` em cada `WHERE` separadamente — em queries com muitos blocos, isso aumenta o risco de inconsistência.
+ 
+> ⚠️ O `ORDER BY` ao final de um `UNION` ordena o resultado combinado inteiro — não apenas o último bloco. Por isso ele fica fora e depois do último `SELECT`.
+ 
+ 
